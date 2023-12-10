@@ -8,7 +8,7 @@ type Activity = {
   distance: number;
 };
 
-export function AddToLocalStorage(activities: Activity[]) {
+export function AddToLocalStorage(activities: any) {
   useEffect(() => {
     localStorage.setItem("activities", JSON.stringify(activities));
   });
