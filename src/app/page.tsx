@@ -21,13 +21,15 @@ function Activities() {
 
   useEffect(() => {
     const activitiesJson = JSON.parse(
-      localStorage.getItem("activities") || "[]"
+      localStorage.getItem("activities") || "{}"
     );
+
+    if (!activitiesJson?.activities) return;
 
     setActivities(activitiesJson.activities);
   }, []);
 
-  if (activities.length === 0) return <div>no activities</div>;
+  if (activities.length === 0) return <div>No activities Click to load</div>;
 
   const consecutiveActivities = getConsecutiveActivities(activities);
   return (
