@@ -1,8 +1,7 @@
-import activitiesJson from "./sample-data/activities.json";
+"use client";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const consecutiveActivities = getConsecutiveActivities(activitiesJson);
-
   return (
     <main className="min-h-screen bg-slate-800 text-white">
       <h1 className="text-2xl ">Run a Mile</h1>
@@ -12,13 +11,40 @@ export default function Home() {
       >
         Load from Strava
       </a>
-      <div>{consecutiveActivities.length} days in a row</div>
-      <div className="grid grid-cols-[repeat(auto-fit,_minmax(320px,_1fr))] gap-8">
-        {consecutiveActivities.map((activity: Activity) => (
-          <ActivityCard key={activity.id} activity={activity} />
-        ))}
-      </div>
+      <Activities />
     </main>
+  );
+}
+
+function Activities() {
+  const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    const activitiesJson = JSON.parse(
+      localStorage.getItem("activities") || "[]"
+    );
+
+    setActivities(activitiesJson.activities);
+  }, []);
+
+  if (activities.length === 0) return <div>no activities</div>;
+
+  const consecutiveActivities = getConsecutiveActivities(activities);
+  return (
+    <>
+      {activities.length ? (
+        <div>
+          <div>{consecutiveActivities.length} days in a row</div>
+          <div className="grid grid-cols-[repeat(auto-fit,_minmax(320px,_1fr))] gap-8">
+            {consecutiveActivities.map((activity: Activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="text-2xl">No activities</div>
+      )}
+    </>
   );
 }
 
@@ -31,7 +57,7 @@ function ActivityCard({ activity }: { activity: Activity }) {
   );
 }
 
-type Activity = {
+export type Activity = {
   id: number;
   start_date: string;
   distance: number;

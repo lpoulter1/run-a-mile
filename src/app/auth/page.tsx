@@ -1,4 +1,5 @@
 import { getToken, getActivities } from "./stravaApi";
+import { AddToLocalStorage } from "./AddToLocalStorage";
 
 async function Page({
   searchParams,
@@ -20,7 +21,7 @@ async function Page({
       <h1>Auth Page</h1>
       <div>Code: {code}</div>
       <div>access_token: {token.access_token}</div>
-      {JSON.stringify(activities)}
+      <AddToLocalStorage activities={activities} />
     </div>
   );
 }

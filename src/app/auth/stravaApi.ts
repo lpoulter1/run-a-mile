@@ -38,5 +38,6 @@ export async function getActivities(token: string) {
   };
 
   const response = await fetch(url, options);
-  return response.json();
+
+  return await response.json();
 }
